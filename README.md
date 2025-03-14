@@ -4,7 +4,7 @@
 the github for this project.
 
 [Link](https://chat.amatshome.com)
-the project also runs here.
+the project also runs here. Press CA Certificate to get the ca.crt
 
 ## SETUP
 

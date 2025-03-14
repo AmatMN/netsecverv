@@ -1,4 +1,4 @@
-const address = "192.168.1.107";
+const address = "chat.amatshome.com";
 
 const endCode = "AadniEAcinoanicaepoeacniawadnADWCacio";
 const startCode = "efinwecoaienconwceoenicowcioneconcowe";
