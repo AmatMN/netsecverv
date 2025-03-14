@@ -7,6 +7,7 @@ CA_KEY="ca.key"
 CA_KEY_PATH="../broker/all_certs/"
 CA_CRT="ca.crt"
 CA_CRT_PATH="../broker/ca_certificates/"
+CA_SRL_PATH="./ca.srl"
 
 # Set filenames for generated files
 SERVER_KEY="server.key"
@@ -109,6 +110,6 @@ mv $CA_KEY "$CA_KEY_PATH"
 mkdir -p "$CA_CRT_PATH"
 
 # Move generated files to the destination directory
-mv $CA_CRT "$CA_CRT_PATH"
+mv $CA_CRT $CA_SRL_PATH "$CA_CRT_PATH"
 
 echo "Files moved to $CA_CRT_PATH and $CA_KEY_PATH."
