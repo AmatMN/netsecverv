@@ -1,4 +1,4 @@
-const address = "chat.amatshome.com";
+const address = "192.168.1.107";
 
 const endCode = "AadniEAcinoanicaepoeacniawadnADWCacio";
 const startCode = "efinwecoaienconwceoenicowcioneconcowe";
@@ -31,7 +31,7 @@ function showSignUp(){
         signFormDisplay.style.display = "block";
     } else {
         signFormDisplay.style.display = "none";
-    }    
+    }
 }
 
 function showMessager(){
@@ -41,7 +41,7 @@ function showMessager(){
     } else {
         messageDisplay.style.display = "none";
     }
-    
+
 }
 
 function signIn(){
@@ -224,7 +224,7 @@ function println(sender, message, selfSend) {
     } else {
         container.classList.add("other");
     }
-    
+
     if (sender !== null){
         let namePlate = document.createElement("B");
         namePlate.textContent = sender + ":";
@@ -262,7 +262,7 @@ function adjustTextareaRows() {
 
     // Update the rows attribute of the textarea
     inputField.rows = newRows;
-    
+
     // Scroll to the bottom to show the latest line
     inputField.scrollTop = inputField.scrollHeight;
     messages.scrollTop = messages.scrollHeight;

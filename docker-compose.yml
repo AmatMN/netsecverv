@@ -25,8 +25,8 @@ services:
       - ./client/certs/ssl_certs/nginx.key:/etc/nginx/ssl/nginx.key:ro
       - ./broker/ca_certificates/ca.crt:/var/www/html/ca_certificates/ca.crt:rw
     ports:
-      - "80:80"
-      - "443:443"
+      - "8080:80"
+      - "4438:443"
     restart: unless-stopped
     depends_on:
       - php

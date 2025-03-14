@@ -24,8 +24,8 @@ the project also runs here.
     * Make sure to run it with sudo as it won't be able to move the files to the correct position afterwards.
     * This will create new keys and certificates for both the MQTT broker and the HTTPS connection.
 7. Go to main.js (`cd ../client/JavaScript`) and change the address to the domain name.
-8. Run the docker-compose file (`docker-compose up`).
-9. Take the ca.crt file and add it to the local Store of safe certificates on every device that wants to be a client.
+8. Move to (`cd ../../`) and Run the docker-compose file (`docker-compose up`).
+9. Take the ca.crt file in ./broker/ca_certificates and add it to the local Store of safe certificates on every device that wants to be a client.
     * Windows: open the crt file and click install certificate...
     * Android: Settings -> security -> install from storage. 
 10. go to the domain name pointing to the server this is running on, Enter a username and enjoy.
