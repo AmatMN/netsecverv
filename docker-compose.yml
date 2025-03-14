@@ -1,0 +1,45 @@
+services:
+  # mosquitto message broker
+  mqtt5:
+    image: eclipse-mosquitto
+    container_name: mqtt5
+    ports:
+      - "1883:1883" #default mqtt port
+      - "1884:9001" #default mqtt port for websockets
+    volumes:
+      - ./broker/config:/mosquitto/config:rw
+      - ./broker/data:/mosquitto/data:rw
+      - ./broker/log:/mosquitto/log:rw
+      - ./broker/certs:/mosquitto/certs:rw
+      - ./broker/ca_certificates:/mosquitto/ca_certificates:rw
+    restart: unless-stopped
+
+  # nginx client side website
+  web:
+    image: nginx
+    container_name: web
+    volumes:
+      - ./client:/var/www/html
+      - ./client/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./client/certs/ssl_certs/nginx.crt:/etc/nginx/ssl/nginx.crt:ro
+      - ./client/certs/ssl_certs/nginx.key:/etc/nginx/ssl/nginx.key:ro
+      - ./broker/ca_certificates/ca.crt:/var/www/html/ca_certificates/ca.crt:rw
+    ports:
+      - "8080:80"
+      - "4438:443"
+    restart: unless-stopped
+    depends_on:
+      - php
+
+  php:
+    image: php:7.4-fpm
+    container_name: php
+    volumes:
+      - ./Php:/var/www/html/Php
+      - ./broker/ca_certificates/ca.crt:/var/www/html/ca_certificates/ca.crt
+      - ./broker/all_certs/ca.key:/var/www/html/all_certs/ca.key
+    restart: unless-stopped
+
+networks:
+  default:
+    name: mqtt5-network

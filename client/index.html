@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="css/main.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"/>
+    <title>MQTT Chat</title>
+</head>
+<body onload="init()">
+    <div id="signup" class="container" style="display: none;">
+        <form id="signupForm">
+            <label id="nameLabel" for="name">* Username</label>
+            <input type="text" id="name" placeholder="Enter Username" required />
+            <button id="submit" type="submit">Submit</button>
+        </form>
+    </div>
+
+    <div class="container" id="chatContainer" style="display: none;">
+        <div class="chat">
+            <div class="chat-body" id="messagesHere">
+            </div>
+            <div class="chat-footer">
+                <textarea name="message" class="input-msg" id="messageInput" cols="10" rows="1" placeholder="Message ..."></textarea>
+                <div class="sending-icon" id="sendButton">
+                    <i class="fa-regular fa-paper-plane"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/forge/1.3.0/forge.min.js"></script>
+<script src="/JavaScript/Main.js"></script>
+</html>
