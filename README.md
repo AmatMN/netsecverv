@@ -9,7 +9,7 @@ the project also runs here.
 ## SETUP
 
 ### prerequisites
-docker-compose installed on the server that's going to run this messaging app.
+---docker-compose installed on the server that's going to run this messaging app.
 
 1. Unzip the files and folders (`git clone https://github.com/AmatMN/netsecverv.git` on linux cli) were you want to run the server.
 2. Go into the folder keyGen. (`cd ./keyGen` on linux cli).
