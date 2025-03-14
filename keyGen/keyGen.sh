@@ -23,8 +23,11 @@ if [[ ! -f "$CA_KEY_PATH" || ! -f "$CA_CRT_PATH" || ! -f "$V3_EXT_PATH" || ! -f 
     exit 1
 fi
 
-# Extract DNS.1 from v3.ext
+# Extract DNS.1 or fallback to IP.1 from v3.ext
 DOMAIN=$(grep -Po '(?<=DNS\.1 = )[^ ]+' "$V3_EXT_PATH")
+if [[ -z "$DOMAIN" ]]; then
+    DOMAIN=$(grep -Po '(?<=IP\.1 = )[^ ]+' "$V3_EXT_PATH")
+fi
 
 # Validate DOMAIN
 if [[ -z "$DOMAIN" ]]; then
@@ -58,8 +61,11 @@ echo "Files moved to $SERVER_CERT_PATH."
 # now repeat but for https certs
 
 
-# Extract DNS.1 from v3.ext
-DOMAIN=$(grep -Po '(?<=DNS\.1 = )[^ ]+' "$NGINX_V3_EXT_PATH")
+# Extract DNS.1 or fallback to IP.1 from v3.ext
+DOMAIN=$(grep -Po '(?<=DNS\.1 = )[^ ]+' "$V3_EXT_PATH")
+if [[ -z "$DOMAIN" ]]; then
+    DOMAIN=$(grep -Po '(?<=IP\.1 = )[^ ]+' "$V3_EXT_PATH")
+fi
 
 # Validate DOMAIN
 if [[ -z "$DOMAIN" ]]; then
