@@ -24,6 +24,7 @@ services:
       - ./client/certs/ssl_certs/nginx.crt:/etc/nginx/ssl/nginx.crt:ro
       - ./client/certs/ssl_certs/nginx.key:/etc/nginx/ssl/nginx.key:ro
       - ./broker/ca_certificates/ca.crt:/var/www/html/ca_certificates/ca.crt:rw
+      - ./Php/signCerts.php:/var/www/html/Php/signCerts.php:rw
     ports:
       - "8080:80"
       - "4438:443"
@@ -34,10 +35,11 @@ services:
   php:
     image: php:7.4-fpm
     container_name: php
+    user: "33:33"
     volumes:
       - ./Php:/var/www/html/Php
-      - ./broker/ca_certificates/ca.crt:/var/www/html/ca_certificates/ca.crt
-      - ./broker/all_certs/ca.key:/var/www/html/all_certs/ca.key
+      - ./broker/ca_certificates/ca.crt:/var/www/html/ca_certificates/ca.crt:rw
+      - ./broker/all_certs/ca.key:/var/www/html/all_certs/ca.key:rw
     restart: unless-stopped
 
 networks:

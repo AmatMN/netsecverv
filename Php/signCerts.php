@@ -14,7 +14,6 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     // Paths to CA certificate and key (must be local paths)
     $caCertPath = "/var/www/html/ca_certificates/ca.crt"; 
     $caKeyPath = "/var/www/html/all_certs/ca.key";
-    $caKeyPassword = "yivYv98s"; // very bad, change later
 
     // Load the CSR
     $csr = openssl_csr_get_public_key($csrPem);
@@ -28,9 +27,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     $caKey = file_get_contents($caKeyPath);
 
     // Parse CA private key with password
-    $caPrivateKey = openssl_pkey_get_private($caKey, $caKeyPassword);
+    $caPrivateKey = openssl_pkey_get_private($caKey);
     if (!$caPrivateKey) {
-        echo json_encode(["error" => "Failed to load CA private key. Check password."]);
+        echo json_encode(["error" => "Failed to load CA private key."]);
         exit;
     }
 

@@ -131,15 +131,14 @@ function signUp(name) {
         const csrPem = forge.pki.certificationRequestToPem(csr);
 
         // Send CSR to PHP backend
-        fetch("./Php/signCerts.php", {
+        fetch("https://" + address + "/Php/signCerts.php", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ csr: csrPem })
         })
-        .then(response => response.json())
+        .then(response => response.json()) // Get response as text first
         .then(data => {
             // Save received certificate in localStorage
-            localStorage.setItem(`clientId`, enteredId);
             localStorage.setItem(`cert`, data.certificate);
             localStorage.setItem(`key`, privateKeyPem);
             console.log("Generated keys!");

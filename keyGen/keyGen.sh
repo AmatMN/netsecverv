@@ -26,7 +26,7 @@ if [[ ! -f "$V3_EXT_PATH" || ! -f "$NGINX_V3_EXT_PATH" ]]; then
     exit 1
 fi
 
-openssl genrsa -des3 -out $CA_KEY 2048
+openssl genrsa -out $CA_KEY 2048
 
 openssl req -new -x509 -days 1826 -key $CA_KEY -out $CA_CRT -subj "/C=NL/ST=0978246/L=0978246/O=0978246/OU=0978246/CN=0978246"
 

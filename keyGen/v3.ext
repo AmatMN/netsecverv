@@ -5,7 +5,7 @@ keyUsage                = digitalSignature, nonRepudiation, keyEncipherment, dat
 issuerAltName           = issuer:copy
 subjectAltName          = @alt_names
 [alt_names]
-DNS.1 = amatshome.com
-DNS.2 = *.amatshome.com
+DNS.1 = chat.amatshome.com
+DNS.2 = *.chat.amatshome.com
 IP.1 = 188.90.109.4
 IP.2 = 192.168.1.107
