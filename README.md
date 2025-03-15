@@ -20,7 +20,8 @@ the project also runs here. Press CA Certificate to get the ca.crt
     * Otherwise You can either change the IP.1 and IP.2 to the remote and internal ip addresses of the server or remove them.
     * After you're done hit ctrl^S to save and crtl^X to close the file.
 5. Repeat step 3 and 4 for nginx.v3.ext.
-6. Run keyGen.sh (`sudo nano ./keyGen.sh`).
+6. Run keyGen.sh (`sudo ./keyGen.sh`).
+    * If you are in the same folder as the file but the command can't be found, then run (`chmod +x keyGen.sh`) first.
     * Make sure to run it with sudo as it won't be able to move the files to the correct position afterwards.
     * This will create new keys and certificates for both the MQTT broker and the HTTPS connection.
 7. Go to main.js (`cd ../client/JavaScript`) and change the address to the domain name.
