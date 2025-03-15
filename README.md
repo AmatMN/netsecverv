@@ -13,7 +13,7 @@ the project also runs here. Press CA Certificate to get the ca.crt
 
 ### Guide
 1. Unzip the files and folders (`git clone https://github.com/AmatMN/netsecverv.git`) where you want to run the server.
-2. Go into the folder keyGen (`cd ./keyGen`).
+2. Go into the folder keyGen (`cd ./mqtt5/keyGen`).
 3. Open the file v3.ext (`sudo nano v3.ext`).
 4. Under `[alt_names]` change DNS.1 and DNS.2 to the domain name and *.domain name that point to the server.
     * If you want to run the message app localy or test is out only leave IP.1 and change the value to the server's local ip address.
