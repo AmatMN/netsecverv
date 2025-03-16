@@ -7,12 +7,14 @@ services:
       - "1883:1883" #default mqtt port
       - "1884:9001" #default mqtt port for websockets
     volumes:
+      - ./certificates/broker:/mosquitto/certs:rw
+      - ./certificates/ca:/mosquitto/ca_certificates:rw
       - ./broker/config:/mosquitto/config:rw
       - ./broker/data:/mosquitto/data:rw
       - ./broker/log:/mosquitto/log:rw
-      - ./broker/certs:/mosquitto/certs:rw
-      - ./broker/ca_certificates:/mosquitto/ca_certificates:rw
     restart: unless-stopped
+    networks:
+      - mqtt5-network
 
   # nginx client side website
   web:
@@ -21,27 +23,27 @@ services:
     volumes:
       - ./client:/var/www/html
       - ./client/conf/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./client/certs/ssl_certs/nginx.crt:/etc/nginx/ssl/nginx.crt:ro
-      - ./client/certs/ssl_certs/nginx.key:/etc/nginx/ssl/nginx.key:ro
-      - ./broker/ca_certificates/ca.crt:/var/www/html/ca_certificates/ca.crt:rw
-      - ./Php/signCerts.php:/var/www/html/Php/signCerts.php:rw
+      - ./certificates/ssl:/etc/nginx/ssl:rw
+      - ./certificates/ca:/var/www/html/ca_certificates:rw
     ports:
       - "8080:80"
       - "4438:443"
     restart: unless-stopped
     depends_on:
       - php
+    networks:
+      - mqtt5-network
 
   php:
     image: php:7.4-fpm
     container_name: php
-    user: "33:33"
     volumes:
       - ./Php:/var/www/html/Php
-      - ./broker/ca_certificates/ca.crt:/var/www/html/ca_certificates/ca.crt:rw
-      - ./broker/all_certs/ca.key:/var/www/html/all_certs/ca.key:rw
+      - ./certificates/ca:/var/www/html/ca_certificates:rw
     restart: unless-stopped
+    networks:
+      - mqtt5-network
 
 networks:
-  default:
+  mqtt5-network:
     name: mqtt5-network

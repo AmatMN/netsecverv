@@ -1,11 +1,6 @@
-subjectKeyIdentifier    = hash
-authorityKeyIdentifier  = keyid:always,issuer:always
-basicConstraints        = CA:FALSE
-keyUsage                = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign
-issuerAltName           = issuer:copy
-subjectAltName          = @alt_names
-[alt_names]
-DNS.1 = chat.amatshome.com
-DNS.2 = *.chat.amatshome.com
-IP.1 = 188.90.109.4
-IP.2 = 192.168.1.107
+subjectKeyIdentifier   = hash
+authorityKeyIdentifier = keyid:always,issuer:always
+basicConstraints       = CA:TRUE
+keyUsage               = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign
+subjectAltName         = DNS:amatshome.com, DNS:*.amatshome.com
+issuerAltName          = issuer:copy

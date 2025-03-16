@@ -24,8 +24,8 @@ the project also runs here. Press CA Certificate to get the ca.crt
     * If you are in the same folder as the file but the command can't be found, then run (`chmod +x keyGen.sh`) first.
     * Make sure to run it with sudo as it won't be able to move the files to the correct position afterwards.
     * This will create new keys and certificates for both the MQTT broker and the HTTPS connection.
-7. Go to main.js (`cd ../client/JavaScript`) and change the address to the domain name.
-8. Move to (`cd ../../`) and Run the docker-compose file (`docker-compose up`).
+7. Go to Main.js (`sudo nano ../client/JavaScript/Main.js`) and change the address to the domain name.
+8. Run the docker-compose file (`docker-compose up`).
 9. Take the ca.crt file in ./broker/ca_certificates and add it to the local Store of safe certificates on every device that wants to be a client.
     * Windows: open the crt file and click install certificate...
     * Android: Settings -> security -> install from storage. 

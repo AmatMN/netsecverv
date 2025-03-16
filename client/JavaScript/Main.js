@@ -2,7 +2,7 @@ const address = "chat.amatshome.com";
 
 const endCode = "AadniEAcinoanicaepoeacniawadnADWCacio";
 const startCode = "efinwecoaienconwceoenicowcioneconcowe";
-let caPath = "./ca_certificates/ca.crt";
+let caPath = "https://chat.amatshome.com/ca_certificates/ca.crt";
 let client;
 
 
@@ -136,9 +136,14 @@ function signUp(name) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ csr: csrPem })
         })
-        .then(response => response.json()) // Get response as text first
+        .then(response => response.text()) // Get response as text first
+        .then(text => {
+            console.log("Raw Response from PHP:", text);
+            return JSON.parse(text); // Try parsing as JSON
+        })
         .then(data => {
             // Save received certificate in localStorage
+            console.log(data.certificate);
             localStorage.setItem(`cert`, data.certificate);
             localStorage.setItem(`key`, privateKeyPem);
             console.log("Generated keys!");
