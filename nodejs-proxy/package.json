@@ -1,0 +1,10 @@
+{
+    "name": "nodejs-proxy",
+    "version": "1.0.0",
+    "main": "server.js",
+    "dependencies": {
+      "express": "^4.17.1",
+      "ws": "^8.0.0",
+      "body-parser": "^1.19.0"
+    }
+  }

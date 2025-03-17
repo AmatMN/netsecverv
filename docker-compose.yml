@@ -16,6 +16,19 @@ services:
     networks:
       - mqtt5-network
 
+  # Node.js Proxy Server
+  nodejs-proxy:
+    build: ./nodejs-proxy
+    container_name: nodejs-proxy
+    ports:
+      - "8081:8081"  # Expose the proxy server port
+    volumes:
+      - ./certificates/ca:/ca_certificates:rw
+      - ./certificates/server:/server:rw
+    restart: unless-stopped
+    networks:
+      - mqtt5-network
+
   # nginx client side website
   web:
     image: nginx

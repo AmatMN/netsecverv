@@ -1,29 +1,22 @@
 <?php
 header("Content-Type: application/json");
-if($_SERVER["REQUEST_METHOD"] === "POST"){
+
+if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Read JSON input
     $data = json_decode(file_get_contents("php://input"), true);
-    if (!isset($data["csr"])) {
-        echo json_encode(["error" => "No CSR provided"]);
+    if (!isset($data["commonName"])) {
+        echo json_encode(["error" => "No commonName provided"]);
         exit;
     }
 
-    // Get the CSR from the request
-    $csrPem = $data["csr"];
+    $commonName = $data["commonName"];
 
     // Paths to CA certificate and key (must be local paths)
-    $caCertPath = "/var/www/html/ca_certificates/ca.crt"; 
+    $caCertPath = "/var/www/html/ca_certificates/ca.crt";
     $caKeyPath = "/var/www/html/ca_certificates/ca.key";
     $caKeyPassword = "yivYv98s"; // very bad, change later
 
-    // Load the CSR
-    $csr = openssl_csr_get_public_key($csrPem);
-    if (!$csr) {
-        echo json_encode(["error" => "Invalid CSR"]);
-        exit;
-    }
-
-    // Load CA certificate and key
+    // Load the CA certificate and key
     $caCert = file_get_contents($caCertPath);
     $caKey = file_get_contents($caKeyPath);
 
@@ -34,12 +27,32 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
         exit;
     }
 
-    // Define certificate serial number and validity
+    // Generate a new private key for the client
+    $privateKeyResource = openssl_pkey_new([
+        "private_key_bits" => 2048,
+        "private_key_type" => OPENSSL_KEYTYPE_RSA,
+    ]);
+
+    // Export the private key to PEM format
+    openssl_pkey_export($privateKeyResource, $privateKeyPem, null, ['encrypt_key' => false]);
+
+    // Create the CSR
+    $dn = [
+        "commonName" => $commonName,
+        "organizationName" => "HR",
+        "organizationalUnitName" => "TINNES02",
+        "localityName" => "Rotterdam",
+        "stateOrProvinceName" => "Zuid-Holland",
+        "countryName" => "NL",
+        "emailAddress" => "0978246@hr.nl"
+    ];
+
+    $csrResource = openssl_csr_new($dn, $privateKeyResource);
+
+    // Sign the CSR with the CA certificate and private key
     $serialNumber = random_int(100000, 999999); // Generate a random serial number
     $validDays = 365; // 1-year validity
-
-    // Sign the CSR to generate a client certificate
-    $clientCert = openssl_csr_sign($csrPem, $caCert, $caPrivateKey, $validDays, ['digest_alg' => 'sha256'], $serialNumber);
+    $clientCert = openssl_csr_sign($csrResource, $caCert, $caPrivateKey, $validDays, ['digest_alg' => 'sha256'], $serialNumber);
     if (!$clientCert) {
         echo json_encode(["error" => "Failed to sign certificate"]);
         exit;
@@ -48,7 +61,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
     // Export the signed certificate as PEM
     openssl_x509_export($clientCert, $signedCert);
 
-    // Send the signed certificate back as JSON
-    echo json_encode(["certificate" => $signedCert]);
+    // Send back the certificate and private key
+    echo json_encode(["certificate" => $signedCert, "privateKey" => $privateKeyPem]);
 }
 ?>

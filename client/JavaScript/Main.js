@@ -99,58 +99,22 @@ function validInput(input){
 }
 
 function signUp(name) {
-    let enteredId = name;
-    generateKeyPair().then(keys => {
+    fetch("https://" + address + "/Php/signCerts.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ commonName: name })
+    })
+    .then(response => response.json())
+    .then(data => {
+        localStorage.setItem('cert', data.certificate);
+        localStorage.setItem('key', data.privateKey);
+        console.log("Generated keys!");
 
-        // Decode Base64 properly
-        const binaryDer = forge.util.decode64(keys.privateKey);
-        const binaryDerPub = forge.util.decode64(keys.publicKey);
-
-        // Convert binary string to Forge ASN.1 object
-        const asn1 = forge.asn1.fromDer(binaryDer);
-        const asn1Pub = forge.asn1.fromDer(binaryDerPub);
-
-        // Convert ASN.1 object to Forge private/public key
-        const privateKey = forge.pki.privateKeyFromAsn1(asn1);
-        const publicKey = forge.pki.publicKeyFromAsn1(asn1Pub);
-
-        // Convert Private Key to PEM format
-        const privateKeyPKCS8 = forge.pki.privateKeyToAsn1(privateKey);
-        const privateKeyPem = forge.pki.privateKeyInfoToPem(privateKeyPKCS8);
-
-        // Create and sign the CSR
-        const csr = forge.pki.createCertificationRequest();
-        csr.setSubject([
-            { name: 'commonName', value: enteredId },
-            { name: 'organizationName', value: 'HR' },
-            { name: 'organizationalUnitName', value: 'TINNES02' },
-            { name: 'localityName', value: 'Rotterdam' },
-            { name: 'stateOrProvinceName', value: 'Zuid-Holland' },
-            { name: 'countryName', value: 'NL' },
-            { name: 'emailAddress', value: '0978246@hr.nl'}
-        ]);
-        csr.publicKey = publicKey;
-        csr.sign(privateKey);
-
-        // Convert CSR to PEM format
-        const csrPem = forge.pki.certificationRequestToPem(csr);
-
-        // Send CSR to PHP backend
-        fetch("https://" + address + "/Php/signCerts.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ csr: csrPem })
-        })
-        .then(response => response.json())
-        .then(data => {
-            // Save received certificate in localStorage
-            localStorage.setItem(`cert`, data.certificate);
-            localStorage.setItem(`key`, privateKeyPem);
-            console.log("Generated keys!");
-            signIn();
-        })
-        .catch(error => console.error("Error:", error));
-    });
+        // Send the cert and key to the Node.js proxy server
+        const cert = localStorage.getItem('cert');
+        const key = localStorage.getItem('key');
+    })
+    .catch(error => console.error("Error during sign-up:", error));
 }
 
 function pemToArrayBuffer(pem) {
