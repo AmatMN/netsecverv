@@ -2,5 +2,5 @@ subjectKeyIdentifier   = hash
 authorityKeyIdentifier = keyid:always,issuer:always
 basicConstraints       = CA:TRUE
 keyUsage               = digitalSignature, nonRepudiation, keyEncipherment, dataEncipherment, keyAgreement, keyCertSign
-subjectAltName         = DNS:amatshome.com, DNS:*.amatshome.com
+subjectAltName         = DNS:DOMAIN_PLACEHOLDER, DNS:STAR_DOMAIN_PLACEHOLDER
 issuerAltName          = issuer:copy

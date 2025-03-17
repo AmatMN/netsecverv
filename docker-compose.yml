@@ -5,7 +5,7 @@ services:
     container_name: mqtt5
     ports:
       - "1883:1883" #default mqtt port
-      - "1884:9001" #default mqtt port for websockets
+      - "1884:9443" #default mqtt port for secure websockets
     volumes:
       - ./certificates/broker:/mosquitto/certs:rw
       - ./certificates/ca:/mosquitto/ca_certificates:rw
@@ -22,7 +22,7 @@ services:
     container_name: web
     volumes:
       - ./client:/var/www/html
-      - ./client/conf/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./client/conf/nginx.conf:/etc/nginx/nginx.conf:rw
       - ./certificates/ssl:/etc/nginx/ssl:rw
       - ./certificates/ca:/var/www/html/ca_certificates:rw
     ports:

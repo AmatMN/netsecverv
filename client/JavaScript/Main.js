@@ -1,8 +1,7 @@
 const address = "chat.amatshome.com";
-
 const endCode = "AadniEAcinoanicaepoeacniawadnADWCacio";
 const startCode = "efinwecoaienconwceoenicowcioneconcowe";
-let caPath = "https://chat.amatshome.com/ca_certificates/ca.crt";
+let caPath = "https://"+address+"/ca_certificates/ca.crt";
 let client;
 
 
@@ -122,7 +121,13 @@ function signUp(name) {
         // Create and sign the CSR
         const csr = forge.pki.createCertificationRequest();
         csr.setSubject([
-            { name: 'commonName', value: enteredId }
+            { name: 'commonName', value: enteredId },
+            { name: 'organizationName', value: 'HR' },
+            { name: 'organizationalUnitName', value: 'TINNES02' },
+            { name: 'localityName', value: 'Rotterdam' },
+            { name: 'stateOrProvinceName', value: 'Zuid-Holland' },
+            { name: 'countryName', value: 'NL' },
+            { name: 'emailAddress', value: '0978246@hr.nl'}
         ]);
         csr.publicKey = publicKey;
         csr.sign(privateKey);
@@ -136,14 +141,9 @@ function signUp(name) {
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ csr: csrPem })
         })
-        .then(response => response.text()) // Get response as text first
-        .then(text => {
-            console.log("Raw Response from PHP:", text);
-            return JSON.parse(text); // Try parsing as JSON
-        })
+        .then(response => response.json())
         .then(data => {
             // Save received certificate in localStorage
-            console.log(data.certificate);
             localStorage.setItem(`cert`, data.certificate);
             localStorage.setItem(`key`, privateKeyPem);
             console.log("Generated keys!");
